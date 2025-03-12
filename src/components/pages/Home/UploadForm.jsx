@@ -6,7 +6,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { IoMdCloudUpload } from 'react-icons/io';
 import useProjectsStore from '../../../Stores/useProjectsStore';
 
-function UploadForm() {
+function UploadForm({ closeModal }) {
     const [projectName, setProjectName] = useState('');
     const [description, setDescription] = useState('');
     const [files, setFiles] = useState(null);
@@ -16,7 +16,7 @@ function UploadForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (projectName && files) {
-            uploadProject(files, projectName, description, setStatus);
+            uploadProject(files, projectName, description, setStatus, closeModal);
         } else {
             toast.error('Please fill all fields and select a file.');
         }

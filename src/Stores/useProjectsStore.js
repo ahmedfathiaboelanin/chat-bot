@@ -34,11 +34,11 @@ const useProjectsStore = create((set) => ({
             toast.error('Somthing went wrong');
         }
     },
-    getProjectFiles: async (project_id) => {
+    getProjectFiles: async (project_id, openModal) => {
         try {
             const response = await axiosInsatnce.get(`data/project/${project_id}/files`)
             console.log(response.data.files);
-            document.getElementById('project_files_modal').showModal()
+            openModal();
             set({ projectFiles: response.data.files });
 
         } catch (error) {
@@ -46,7 +46,7 @@ const useProjectsStore = create((set) => ({
             toast.error('Somthing went wrong');
         }
     },
-    uploadProject: async (files, projectName, description, setStatus) => { 
+    uploadProject: async (files, projectName, description, setStatus, closeModal) => { 
         try {
             setStatus(PENDING);
             const formData = new FormData();
@@ -63,6 +63,7 @@ const useProjectsStore = create((set) => ({
             setStatus(FULFILLED);
             toast.success('Project uploaded successfully');
             set((state) => ({ rerender: !state.rerender }))
+            closeModal();
         } catch (error) {
             console.error('Error:', error);
             setStatus(REJECTED);

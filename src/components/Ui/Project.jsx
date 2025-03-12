@@ -7,9 +7,9 @@ import { IoChatbubble, IoEye } from 'react-icons/io5';
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoIosCloseCircle } from 'react-icons/io';
 
-export default function Project({ name, description, project_id, processing_status, created_at }) {
+export default function Project({ name, description, project_id, processing_status, created_at, openModal }) {
     const { getProjectFiles, deleteProject, processProject } = useProjectsStore()
-
+    
     return (
         <tr>
             <td>
@@ -34,7 +34,7 @@ export default function Project({ name, description, project_id, processing_stat
                     <Link className="flex gap-2 btn" to={`/chat/${project_id}`}>
                         <IoChatbubble className='text-lg text-blue-700' />
                     </Link>
-                    <button className="flex gap-2 btn" onClick={() => getProjectFiles(project_id)}>
+                    <button className="flex gap-2 btn" onClick={() => getProjectFiles(project_id, openModal)}>
                         <IoEye className='text-lg text-emerald-700' />
                     </button>
                     <button className="flex gap-2 btn" onClick={() => processProject(project_id)}>
@@ -46,5 +46,6 @@ export default function Project({ name, description, project_id, processing_stat
                 </div>
             </th>
         </tr>
+        
     )
 }

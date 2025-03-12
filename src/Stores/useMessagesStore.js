@@ -15,7 +15,7 @@ const useMessagesStore = create((set) => ({
             set({ isLoading: PENDING });
             let res = await axiosInsatnce.post('/chatbot/chat',
                 {
-                    message,
+                    query:message,
                     project_id
                 }
             )
@@ -23,7 +23,8 @@ const useMessagesStore = create((set) => ({
             set((state) => ({ messages: [...state.messages, aiResponse] }));
             set({ isLoading: FULFILLED });
         } catch (error) {
-            console.log(error);
+            error.response.data.detail.map(err => console.log(err))
+            
             toast.error('Something went wrong');
             set({ isLoading: REJECTED });
         }
