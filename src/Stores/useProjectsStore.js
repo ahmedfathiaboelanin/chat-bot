@@ -17,9 +17,8 @@ const useProjectsStore = create((set) => ({
             set({ isLoading: FULFILLED })
         }
         catch (error) {
-            console.log(error);
             set({ isLoading: REJECTED })
-            toast.error('Somthing went wrong');
+            toast.error(error.response.data.detail);
         }
     },
     deleteProject: async (project_id) => {

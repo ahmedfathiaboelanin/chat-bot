@@ -4,15 +4,19 @@ import Chat from './pages/Chat'
 import Navbar from './components/Ui/Navbar'
 import Login from './pages/Login/Login'
 import { Toaster } from 'react-hot-toast'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
+  const token = localStorage.getItem('token')
+  console.log(token);
+
   return (
     <>
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/chat/:id' element={<Chat />} />
+          <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path='/chat/:id' element={<ProtectedRoute><Chat /></ProtectedRoute>} />
           <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
