@@ -3,10 +3,10 @@ import useProjectsStore from '../../Stores/useProjectsStore'
 import Modal from './Modal'
 
 export default function ShowFilesModal({ isOpen, closeModal }) {
-    const { projectFiles } = useProjectsStore()
+    const { projectFiles, projectName } = useProjectsStore()
     return (
         <Modal
-            title={'Project Files'}
+            title={`Project Files ${projectName}`}
             isOpen={isOpen}
             onClose={closeModal}
         >

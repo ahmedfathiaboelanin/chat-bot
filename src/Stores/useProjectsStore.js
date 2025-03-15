@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 const useProjectsStore = create((set) => ({
     projects: [],
     projectFiles: [],
+    projectName: null,
     isLoading: null,
     rerender: false,
     forceRerender: () => { set((state) => ({ rerender: !state.rerender })) },
@@ -36,10 +37,8 @@ const useProjectsStore = create((set) => ({
     getProjectFiles: async (project_id, openModal) => {
         try {
             const response = await axiosInsatnce.get(`data/project/${project_id}/files`)
-            console.log(response.data.files);
             openModal();
-            set({ projectFiles: response.data.files });
-
+            set({ projectFiles: response.data.files, projectName: response.data.project_name });
         } catch (error) {
             console.log(error)
             toast.error('Somthing went wrong');
@@ -49,7 +48,10 @@ const useProjectsStore = create((set) => ({
         try {
             setStatus(PENDING);
             const formData = new FormData();
-            formData.append('files', files[0]);
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            
             const queryParams = new URLSearchParams({
                 project_name: projectName,
                 project_description: description,
