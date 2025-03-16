@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import useProjectsStore from '../../Stores/useProjectsStore';
 import { PiFilesBold } from 'react-icons/pi';
-import { FaDeleteLeft, FaGears } from 'react-icons/fa6';
+import { FaDeleteLeft, FaGears, FaPlus } from 'react-icons/fa6';
 import { IoChatbubble, IoEye } from 'react-icons/io5';
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -42,6 +42,9 @@ export default function Project({ name, description, project_id, processing_stat
                     </button>
                     <button className="flex gap-2 btn" onClick={() => deleteProject(project_id)}>
                         <FaDeleteLeft className='text-lg text-red-700' />
+                    </button>
+                    <button className="flex gap-2 btn" onClick={() => console.log('Download')}>
+                        <FaPlus className='text-lg text-emerald-700' />
                     </button>
                 </div>
             </th>
