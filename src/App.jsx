@@ -7,9 +7,6 @@ import { Toaster } from 'react-hot-toast'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
-  const token = localStorage.getItem('token')
-  console.log(token);
-
   return (
     <>
       <BrowserRouter>
@@ -20,10 +17,7 @@ function App() {
           <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   )
 }

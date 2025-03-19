@@ -1,12 +1,11 @@
 import axios from "axios";
 
-const axiosInsatnce = axios.create({
-    baseURL: 'http://192.168.1.27:8000/api/v1',
-})
+const axiosInstance = axios.create({
+    baseURL: 'http://192.168.1.29:8000/api/v1',
+    timeout: 15000, // 15 seconds timeout
+});
 
-
-// Add a request interceptor to dynamically set the Authorization header
-axiosInsatnce.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -16,15 +15,23 @@ axiosInsatnce.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
-
-axiosInsatnce.interceptors.response.use(response => {
+axiosInstance.interceptors.response.use(response => {
     return response;
 }, error => {
-    if (error.response.status === 401) {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
+    if (axios.isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+            return Promise.reject({
+                message: 'Request timed out. Please try again.',
+                status: 408
+            });
+        }
+
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
     }
     return Promise.reject(error);
-})
+});
 
-export default axiosInsatnce;
+export default axiosInstance;

@@ -6,10 +6,11 @@ import { FaDeleteLeft, FaGears, FaPlus } from 'react-icons/fa6';
 import { IoChatbubble, IoEye } from 'react-icons/io5';
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoIosCloseCircle } from 'react-icons/io';
+import Dropdown from './DropDown';
 
-export default function Project({ name, description, project_id, processing_status, created_at, openModal }) {
+export default function Project({ name, description, project_id, processing_status, created_at, openShowFielsModal, openAddFilesModal, setAddfilesId }) {
     const { getProjectFiles, deleteProject, processProject } = useProjectsStore()
-    
+
     return (
         <tr>
             <td>
@@ -30,25 +31,28 @@ export default function Project({ name, description, project_id, processing_stat
             <td>{created_at ? created_at.split('T')[0] : '--'}</td>
             <td>{processing_status.is_ready_for_rag ? <div className='flex gap-2 items-center'><FaCheckCircle className='text-lg text-green-700' /> Done</div> : <div className='flex gap-2 items-center'><IoIosCloseCircle className='text-lg text-red-700' /> Faild</div>}</td>
             <th>
-                <div className="flex gap-2">
-                    <Link className="flex gap-2 btn" to={`/chat/${project_id}`}>
-                        <IoChatbubble className='text-lg text-blue-700' />
+                <Dropdown>
+                    <Link className="w-full gap-2 flex btn" to={`/chat/${project_id}`}>
+                        <IoChatbubble className='text-lg text-blue-700' /> Chat
                     </Link>
-                    <button className="flex gap-2 btn" onClick={() => getProjectFiles(project_id, openModal)}>
-                        <IoEye className='text-lg text-emerald-700' />
+                    <button className="w-full gap-2 flex btn" onClick={() => getProjectFiles(project_id, openShowFielsModal)}>
+                        <IoEye className='text-lg text-emerald-700' /> Show Files
                     </button>
-                    <button className="flex gap-2 btn" onClick={() => processProject(project_id)}>
-                        <FaGears className='text-lg text-emerald-700' />
+                    <button className="w-full gap-2 flex btn" onClick={() => {
+                        setAddfilesId(project_id)
+                        openAddFilesModal()
+                    }}>
+                        <FaPlus className='text-lg text-emerald-700' /> Add Files
                     </button>
-                    <button className="flex gap-2 btn" onClick={() => deleteProject(project_id)}>
-                        <FaDeleteLeft className='text-lg text-red-700' />
+                    <button className="w-full gap-2 flex btn" onClick={() => processProject(project_id)}>
+                        <FaGears className='text-lg text-emerald-700' /> Process
                     </button>
-                    <button className="flex gap-2 btn" onClick={() => console.log('Download')}>
-                        <FaPlus className='text-lg text-emerald-700' />
+                    <button className="w-full gap-2 flex btn" onClick={() => deleteProject(project_id)}>
+                        <FaDeleteLeft className='text-lg text-red-700' /> Delete
                     </button>
-                </div>
+                </Dropdown>
             </th>
         </tr>
-        
+
     )
 }

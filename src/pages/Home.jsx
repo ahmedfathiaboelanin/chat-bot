@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className='h-screen flex gap-5 flex-col p-5 bg-gray-50'>
       <FileUploadModal />
-      <ProjectsTable/>
+      <ProjectsTable />
     </main>
   )
 }

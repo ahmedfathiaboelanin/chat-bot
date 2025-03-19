@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Project from './Project'
 import ShowFilesModal from './ShowFilesModal';
 import useProjectsStore from '../../Stores/useProjectsStore';
+import AddFilesModal from './AddFilesModal';
 
 export default function ProjectsTable() {
     const { getProjects, projects, rerender } = useProjectsStore()
-    const [isOpen, setIsOpen] = useState(false)
-    const openModal = () => setIsOpen(true)
-    const closeModal = () => setIsOpen(false)
+    const [isShowFielsModalOpen, setIsShowFielsModalOpen] = useState(false)
+    const [isAddFilesModalOpen, setIsAddFilesModalOpen] = useState(false)
+    const [id, setId] = useState(null)
+    const openShowFielsModal = () => setIsShowFielsModalOpen(true)
+    const closeShowFielsModal = () => setIsShowFielsModalOpen(false)
+    const openAddFilesModal = () => setIsAddFilesModalOpen(true)
+    const closeAddFilesModal = () => setIsAddFilesModalOpen(false)
 
     useEffect(() => { getProjects(); }, [rerender]);
     return (
@@ -25,12 +30,13 @@ export default function ProjectsTable() {
                 <tbody>
                     {
                         projects?.map(project => (
-                            <Project key={project.project_id} openModal={openModal} {...project} />
+                            <Project key={project.project_id} setAddfilesId={setId} openAddFilesModal={openAddFilesModal} openShowFielsModal={openShowFielsModal} {...project} />
                         ))
                     }
                 </tbody>
             </table>
-            <ShowFilesModal isOpen={isOpen} closeModal={closeModal} />
+            <ShowFilesModal isOpen={isShowFielsModalOpen} closeModal={closeShowFielsModal} />
+            <AddFilesModal isOpen={isAddFilesModalOpen} projectId={id} closeModal={closeAddFilesModal} />
         </div>
     )
 }

@@ -8,6 +8,7 @@ const useProjectsStore = create((set) => ({
     projectFiles: [],
     projectName: null,
     isLoading: null,
+    addProjectLoading:null,
     rerender: false,
     forceRerender: () => { set((state) => ({ rerender: !state.rerender })) },
     getProjects: async () => {
@@ -83,13 +84,35 @@ const useProjectsStore = create((set) => ({
             const indexResponse = await axiosInsatnce.post(`/nlp/index/push/${project_id}`, {
                 "do_reset": 0
             });
-            console.log('index response',indexResponse.data);
+            console.log('index response', indexResponse.data);
+            toast.success('Project processed successfully');
             set((state) => ({ rerender: !state.rerender }))
         } catch (error) {
             console.error(error);
             toast.error('Something went wrong');
         }
     },
+
+
+    submitUploadedFiles: async (files, projectId, setIsLoading, closeModal) => {
+        console.log(projectId);
+        try {
+            setIsLoading(PENDING);
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            };
+            const response = await axiosInsatnce.post(`/data/upload/project/${projectId}`, formData);
+            console.log(response);
+            setIsLoading(FULFILLED);
+            closeModal();
+            toast.success('Files uploaded successfully');
+        } catch (error) {
+            console.log(error);
+            setIsLoading(REJECTED);
+            toast.error('Something went wrong');
+        }
+    }
 }))
 
 export default useProjectsStore;

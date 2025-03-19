@@ -17,7 +17,7 @@ function Navbar() {
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <img
-                                alt="Tailwind CSS Navbar component"
+                                alt="User Image"
                                 src="https://lh3.google.com/u/0/ogw/AF2bZyhEtz3FA4m33gTCFOp8Wjxok54eZy1D7SK5bRDk81kBMw=s32-c-mo" />
                         </div>
                     </div>

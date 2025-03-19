@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { SlOptionsVertical } from "react-icons/sl";
 
-export default function Dropdown() {
+export default function Dropdown({ children }) {
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
-        <div className="relative inline-block text-left">
+        <div className="relative inline-block text-left" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+                className="px-4 py-2 rounded-lg shadow-md"
             >
-                Open Dropdown
+                <SlOptionsVertical className="text-lg" />
             </button>
 
             {isOpen && (
-                <ul className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Item 1</li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Item 2</li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Item 3</li>
+                <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                    {children}
                 </ul>
             )}
         </div>
